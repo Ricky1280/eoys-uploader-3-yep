@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>QUERY</title>
+    <meta name="description" content="Cooper Union's Second Annual End of the Year Show Gallery">
+    <link id="favicon" rel="icon" href="https://cdn.glitch.com/1ddf0756-3e11-469e-97f4-3ee8ac80c2ed%2Fcooper%20favicon.ico?v=1594001380616" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/app/css/space.css">    
+    <link rel="stylesheet" href="/app/css/style.css">
+    
+  </head>
+  <body id="top">
+    <code>
+    select * from postStorageV1j
+    </code>
+    <code id="sum"><b>total:</b><i></i></code>    
+    <textarea>select * from postStorageV1j</textarea>
+    <pre id="output"></pre>
+    <script>
+    
+      document.querySelector("textarea").addEventListener("input", async (e)=>{
+        console.log(e.srcElement.value)
+        const formData = new FormData()
+        formData.append('query', e.srcElement.value)
+        const res = await fetch('https://eoys-uploader-2021-stage.glitch.me/api/query', {
+          method:'POST',
+          body: formData
+        }).then(res=>res.json())
+        
+        try{
+          res = res.map((item)=>{
+            item.row = JSON.parse(item.row)
+            return item
+          })
+        } catch(e) {
+          console.log('res is not an array')
+        }
+        document.querySelector("#output").innerHTML = JSON.stringify(res, null, ' ')
+        document.querySelector("#sum i").innerHTML = res.length
+  
+      })
+    
+    </script>
+  </body>
+</html>
